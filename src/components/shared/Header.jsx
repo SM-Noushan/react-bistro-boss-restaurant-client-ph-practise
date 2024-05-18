@@ -1,15 +1,15 @@
 import { NavLink } from "react-router-dom";
 
-const navLink = (
+const navLinks = (
   <>
     <li>
       <NavLink>Navbar Item 2</NavLink>
     </li>
     <li>
-      <navLink>Navbar Item 2</navLink>
+      <NavLink>Navbar Item 2</NavLink>
     </li>
     <li>
-      <navLink>Navbar Item 3</navLink>
+      <NavLink>Navbar Item 3</NavLink>
     </li>
   </>
 );
@@ -46,7 +46,7 @@ const Header = () => {
           <div className="flex-none hidden lg:block">
             <ul className="menu menu-horizontal gap-x-4">
               {/* Navbar menu content here */}
-              {navLink}
+              {navLinks}
             </ul>
           </div>
         </div>
@@ -59,7 +59,7 @@ const Header = () => {
         ></label>
         <ul className="menu p-4 w-80 min-h-full bg-base-200">
           {/* Sidebar content here */}
-          {navLink}
+          {navLinks}
         </ul>
       </div>
     </div>
