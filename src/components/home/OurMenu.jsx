@@ -7,10 +7,14 @@ const OurMenu = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["ourMenu"],
     queryFn: async () => {
-      const res = await axios.get("data/menu.json");
-      return await res.data.filter(
-        (item) => item.category.toLowerCase() === "popular"
-      );
+      try {
+        const res = await axios.get("data/menu.json");
+        return await res.data.filter(
+          (item) => item.category.toLowerCase() === "popular"
+        );
+      } catch (error) {
+        console.log(error);
+      }
     },
   });
   // console.log(data);
