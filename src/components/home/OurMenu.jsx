@@ -2,22 +2,10 @@ import SectionHeading from "./SectionHeading";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import MenuItem from "../menu-item/MenuItem";
+import useMenu from "../../hooks/useMenu";
 
 const OurMenu = () => {
-  const { data, isLoading } = useQuery({
-    queryKey: ["ourMenu"],
-    queryFn: async () => {
-      try {
-        const res = await axios.get("data/menu.json");
-        return await res.data.filter(
-          (item) => item.category.toLowerCase() === "popular"
-        );
-      } catch (error) {
-        console.log(error);
-      }
-    },
-  });
-  // console.log(data);
+  const { data, isLoading } = useMenu("popularMenu", "popular");
   return (
     <>
       <SectionHeading subHeading="Check it out" heading="FROM OUR MENU" />

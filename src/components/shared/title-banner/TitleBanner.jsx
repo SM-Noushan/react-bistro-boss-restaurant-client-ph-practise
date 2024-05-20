@@ -17,8 +17,20 @@ const TitleBanner = ({ imgURL, type = false, heading, desc }) => {
               type ? "px-40 py-20" : "px-80 mt-[110px] py-[145px]"
             } bg-[#15151599]`}
           >
-            <h1 className="mb-5 text-[88px] font-bold uppercase">{heading}</h1>
-            <h6 className="mb-5 text-2xl font-semibold">{desc}</h6>
+            <h1
+              className={`mb-5 uppercase ${
+                type ? "text-[45px] font-semibold" : "text-[88px] font-bold"
+              }`}
+            >
+              {heading}
+            </h1>
+            <h6
+              className={`mb-5 font-semibold${
+                type ? "font-inter" : "text-2xl"
+              }`}
+            >
+              {desc}
+            </h6>
           </div>
         </div>
       </div>
@@ -28,7 +40,7 @@ const TitleBanner = ({ imgURL, type = false, heading, desc }) => {
 
 TitleBanner.propTypes = {
   imgURL: PropTypes.string.isRequired,
-  typ: PropTypes.bool,
+  type: PropTypes.bool,
   heading: PropTypes.string.isRequired,
   desc: PropTypes.string.isRequired,
 };
