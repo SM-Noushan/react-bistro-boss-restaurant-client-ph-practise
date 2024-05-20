@@ -1,6 +1,7 @@
 import Banner from "../../components/home/Banner";
 import Category from "../../components/home/Category";
 import OurMenu from "../../components/home/OurMenu";
+import OurMenuParallax from "../../components/home/OurMenuParallax";
 
 const Home = () => {
   return (
@@ -10,6 +11,7 @@ const Home = () => {
         <Category />
         <OurMenu />
       </div>
+      <OurMenuParallax />
     </>
   );
 };
