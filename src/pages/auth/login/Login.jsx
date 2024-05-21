@@ -8,14 +8,36 @@ import { useEffect, useRef, useState } from "react";
 import heroImg from "../../../assets/others/authentication2.png";
 import bgImg from "../../../assets/others/authentication.png";
 import { toast } from "react-toastify";
+import useAuth from "../../../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const { logIn, loading, setLoading } = useAuth();
+  const navigate = useNavigate();
   const captchaRef = useRef("");
   const [captchaValidate, setCaptchaValidate] = useState(false);
 
   useEffect(() => {
     loadCaptchaEnginge(6, "rgb(209 160 84 / 0.7)", "white");
   }, []);
+
+  const handleForm = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const email = form.email.value;
+    const passowrd = form.password.value;
+    // console.log({ email, passowrd });
+    try {
+      await logIn(email, passowrd);
+      form.reset();
+      toast.success("Signin successful");
+      navigate("/");
+    } catch (error) {
+      setLoading(false);
+      console.log("error >> ", error);
+      toast.error("Error! Try again");
+    }
+  };
 
   return (
     <div
@@ -29,21 +51,26 @@ const Login = () => {
         style={{ boxShadow: "10px 10px 10px 10px rgba(0,0,0,0.25)" }}
       >
         <img src={heroImg} className="" />
-        <form className="card-body max-w-[536px]">
+        <form onSubmit={handleForm} className="card-body max-w-[536px]">
           <h1 className="text-dark-001 text-[40px] font-bold text-center">
             Login
           </h1>
+          {/* email */}
           <div className="form-control">
             <label className="label px-0">
               <span className="text-xl text-dark-002 font-semibold">Email</span>
             </label>
             <input
+              autoComplete="username"
+              name="email"
               type="email"
               placeholder="enter your email"
               className="input input-bordered placeholder:text-dark-1a1"
               required
             />
           </div>
+
+          {/* password */}
           <div className="form-control">
             <label className="label px-0">
               <span className="text-xl text-dark-002 font-semibold">
@@ -51,6 +78,8 @@ const Login = () => {
               </span>
             </label>
             <input
+              autoComplete="current-password"
+              name="password"
               type="password"
               placeholder="enter your password"
               className="input input-bordered placeholder:text-dark-1a1"
@@ -62,6 +91,8 @@ const Login = () => {
               </a> */}
             </label>
           </div>
+
+          {/* captcha */}
           <div className="form-control flex">
             <label className="label px-0">
               <span className="text-xl text-dark-002 font-semibold">
@@ -126,13 +157,18 @@ const Login = () => {
               </div>
             </div>
           </div>
+
+          {/* signin btn */}
           <div className="form-control mt-6">
             <button
-              disabled={!captchaValidate}
+              disabled={!captchaValidate || loading}
               type="submit"
               className="btn bg-gold-054/70 hover:bg-gold-054 text-white text-xl font-bold disabled:bg-gold-054/50"
             >
               Sign In
+              {loading && (
+                <span className="loading loading-dots loading-md"></span>
+              )}
             </button>
           </div>
         </form>
