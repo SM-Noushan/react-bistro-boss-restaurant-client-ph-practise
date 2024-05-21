@@ -25,7 +25,7 @@ const Menu = () => {
         }}
         dataType={{
           key: "todaysOfferMenu",
-          category: "offer",
+          category: "menu?category=offer",
         }}
       />
       {/* desserts */}
@@ -38,7 +38,7 @@ const Menu = () => {
         }}
         dataType={{
           key: "dessertsMenu",
-          category: "desserts",
+          category: "menu?category=desserts",
         }}
       />
       {/* pizzas */}
@@ -51,7 +51,7 @@ const Menu = () => {
         }}
         dataType={{
           key: "pizzaMenu",
-          category: "pizza",
+          category: "menu?category=pizza",
         }}
       />
       {/* salad */}
@@ -64,7 +64,7 @@ const Menu = () => {
         }}
         dataType={{
           key: "saladMenu",
-          category: "salad",
+          category: "menu?category=salad",
         }}
       />
       {/* soups */}
@@ -77,7 +77,7 @@ const Menu = () => {
         }}
         dataType={{
           key: "soupsMenu",
-          category: "soups",
+          category: "menu?category=soups",
         }}
       />
     </>

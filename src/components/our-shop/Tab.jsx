@@ -1,8 +1,6 @@
 import PropTypes from "prop-types";
 
-const Tab = ({ index, label }) => {
-  const { tabIndex, setTabIndex } = index || {};
-
+const Tab = ({ index: tabIndex, label, handleTab }) => {
   return (
     <button
       role="tab"
@@ -11,7 +9,7 @@ const Tab = ({ index, label }) => {
           ? "text-gold-506 border-b-2 border-b-gold-506 font-bold"
           : "text-dark-001 font-medium"
       }`}
-      onClick={() => setTabIndex(label)}
+      onClick={() => handleTab(label)}
     >
       {label === "offer" ? "Today's Pick" : label}
     </button>
@@ -19,8 +17,9 @@ const Tab = ({ index, label }) => {
 };
 
 Tab.propTypes = {
-  index: PropTypes.object.isRequired,
+  index: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
+  handleTab: PropTypes.func.isRequired,
 };
 
 export default Tab;

@@ -1,6 +1,6 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
+import { useState } from "react";
 import queryString from "query-string";
 import useMenu from "../../hooks/useMenu";
 import Tab from "../../components/our-shop/Tab";
@@ -11,19 +11,24 @@ import TitleBanner from "../../components/shared/title-banner/TitleBanner";
 const Shop = () => {
   const tabs = ["salad", "pizza", "soups", "desserts", "drinks", "offer"];
   const [params] = useSearchParams();
-  const [tabIndex, setTabIndex] = useState(params.get("category") || "salad");
   const navigate = useNavigate();
+  const [tabIndex, setTabIndex] = useState(params.get("category"));
 
-  useEffect(() => {
-    const currentQuery = { category: tabIndex };
+  const handleTab = (label) => {
+    setTabIndex(label);
+    const currentQuery = { category: label };
     const url = queryString.stringifyUrl({
       url: "/shop",
       query: currentQuery,
     });
     navigate(url);
-  }, [tabIndex]);
+  };
 
-  const { data, isLoading } = useMenu(`${tabIndex}Menu`, tabIndex);
+  const { data, isLoading } = useMenu(
+    `${tabIndex}Menu`,
+    `menu?category=${tabIndex}`
+  );
+
   return (
     <>
       <Helmet>
@@ -37,7 +42,7 @@ const Shop = () => {
       <div className="mx-auto container xl:max-w-[1320px] font-inter my-20">
         <div role="tablist" className="tabs w-fit mx-auto space-x-8">
           {tabs.map((tab, idx) => (
-            <Tab key={idx} label={tab} index={{ tabIndex, setTabIndex }} />
+            <Tab key={idx} label={tab} index={tabIndex} handleTab={handleTab} />
           ))}
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-12">

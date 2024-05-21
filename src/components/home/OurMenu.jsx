@@ -3,7 +3,7 @@ import MenuItem from "../menu-item/MenuItem";
 import useMenu from "../../hooks/useMenu";
 
 const OurMenu = () => {
-  const { data, isLoading } = useMenu("popularMenu", "popular");
+  const { data, isLoading } = useMenu("popularMenu", "menu?category=popular");
   return (
     <>
       <SectionHeading subHeading="Check it out" heading="FROM OUR MENU" />

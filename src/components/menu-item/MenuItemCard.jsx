@@ -2,10 +2,13 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
 const MenuItemCard = ({ item }) => {
-  const { name, recipe, image, _id } = item || {};
+  const { name, recipe, image, price, _id } = item || {};
 
   return (
-    <div className="card font-inter w-fit">
+    <div className="card font-inter w-fit relative">
+      <div className="absolute bg-[#111827] text-white font-semibold px-4 py-2 right-6 top-6">
+        ${price || 0}
+      </div>
       <figure>
         <img src={image} className="w-[424px] h-[300px] rounded-md" />
       </figure>
@@ -17,7 +20,7 @@ const MenuItemCard = ({ item }) => {
         <div className="card-actions justify-center">
           <Link
             to={`recipe/:${_id}`}
-            className="btn px-12 uppercase text-xl font-medium text-gold-506 border-b-2 border-b-gold-506 hover:bg-dark-001 hover:text-gold-506"
+            className="btn px-12 uppercase text-xl font-medium bg-dark-006 text-gold-506 border-b-2 border-b-gold-506 hover:bg-dark-001 hover:text-gold-506"
           >
             Add To Cart
           </Link>

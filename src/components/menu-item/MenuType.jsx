@@ -24,7 +24,7 @@ const MenuType = ({ banner, section, dataType }) => {
         </div>
         <div className="text-center mt-12">
           <Link
-            to={`/shop?category=${category}`}
+            to={`/shop?category=${category.split("=")[1]}`}
             className="btn border-b-4 border-b-dark-937 hover:btn-outline uppercase text-xl font-medium text-dark-937"
           >
             ORDER YOUR FAVOURITE FOOD
