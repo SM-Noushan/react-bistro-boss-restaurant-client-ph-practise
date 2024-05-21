@@ -1,4 +1,6 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
+import { toast } from "react-toastify";
 
 const navLinks = (
   <>
@@ -56,6 +58,9 @@ const navLinks = (
 );
 
 const Header = () => {
+  const { user, loading, logOut } = useAuth();
+  const navigate = useNavigate();
+
   return (
     <div className="drawer lg:text-white z-10 font-inter">
       <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
@@ -101,16 +106,36 @@ const Header = () => {
             </ul>
           </div>
           <div className="ml-16 mr-12 flex items-center gap-x-4">
-            <NavLink
-              to="/login"
-              className={({ isActive }) =>
-                `uppercase text-xl font-extrabold ${
-                  isActive ? "text-[#EEFF25]" : "text-dark-001 md:text-white"
-                }`
-              }
-            >
-              Login
-            </NavLink>
+            {loading ? (
+              <div className="w-20 h-8 rounded-md animate-pulse bg-slate-400/50" />
+            ) : user ? (
+              <button
+                onClick={() => {
+                  logOut()
+                    .then(() => {
+                      toast.success("Signout successful");
+                      navigate("/login");
+                    })
+                    .catch(() => {
+                      toast.error("Failed! Try again");
+                    });
+                }}
+                className="uppercase text-xl font-extrabold text-dark-001 md:text-white hover:text-[#EEFF25]"
+              >
+                Sign Out
+              </button>
+            ) : (
+              <NavLink
+                to="/login"
+                className={({ isActive }) =>
+                  `uppercase text-xl font-extrabold ${
+                    isActive ? "text-[#EEFF25]" : "text-dark-001 md:text-white"
+                  }`
+                }
+              >
+                Login
+              </NavLink>
+            )}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="45"
