@@ -24,8 +24,8 @@ const Menu = () => {
           subHeading: "Don't miss",
         }}
         dataType={{
-          key: "popularMenu",
-          category: "popular",
+          key: "todaysOfferMenu",
+          category: "offer",
         }}
       />
       {/* desserts */}
@@ -37,7 +37,7 @@ const Menu = () => {
           type: true,
         }}
         dataType={{
-          key: "dessertMenu",
+          key: "dessertsMenu",
           category: "dessert",
         }}
       />
@@ -76,7 +76,7 @@ const Menu = () => {
           type: true,
         }}
         dataType={{
-          key: "soupMenu",
+          key: "soupsMenu",
           category: "soup",
         }}
       />

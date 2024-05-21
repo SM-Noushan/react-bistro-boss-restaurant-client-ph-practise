@@ -9,8 +9,8 @@ const useMenu = (qKey, type = null) => {
       try {
         const res = await axios.get("data/menu.json");
         if (type)
-          return await res.data.filter(
-            (item) => item.category.toLowerCase() === type
+          return await res.data.filter((item) =>
+            item.category.toLowerCase().includes(type.toLowerCase())
           );
         return await res.data;
       } catch (error) {
