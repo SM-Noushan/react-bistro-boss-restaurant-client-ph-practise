@@ -1,6 +1,4 @@
 import SectionHeading from "./SectionHeading";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import MenuItem from "../menu-item/MenuItem";
 import useMenu from "../../hooks/useMenu";
 

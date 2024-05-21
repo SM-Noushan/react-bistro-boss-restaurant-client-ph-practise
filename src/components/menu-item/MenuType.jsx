@@ -21,8 +21,8 @@ const MenuType = ({ banner, section, dataType }) => {
             ? data.map((item) => <MenuItem key={item._id} item={item} />)
             : "No Data"}
         </div>
-        <div className="text-center mt-6">
-          <button className="btn border-b-4 border-b-[#1F2937] hover:btn-outline uppercase">
+        <div className="text-center mt-12">
+          <button className="btn border-b-4 border-b-dark-937 hover:btn-outline uppercase text-xl font-medium text-dark-937">
             ORDER YOUR FAVOURITE FOOD
           </button>
         </div>

@@ -1,6 +1,9 @@
 import { Helmet } from "react-helmet-async";
-import bannerURL from "../../assets/menu/banner3.jpg";
-import bannerURL2 from "../../assets/home/chef-service.jpg";
+import cover from "../../assets/menu/banner3.jpg";
+import soupURL from "../../assets/menu/soup-bg.jpg";
+import pizzaURL from "../../assets/menu/pizza-bg.jpg";
+import saladURL from "../../assets/menu/salad-bg.jpg";
+import desertURL from "../../assets/menu/dessert-bg.jpeg";
 import MenuType from "../../components/menu-item/MenuType";
 
 const Menu = () => {
@@ -12,7 +15,7 @@ const Menu = () => {
       {/* page banner and toady's offer */}
       <MenuType
         banner={{
-          url: bannerURL,
+          url: cover,
           heading: "OUR MENU",
           desc: "Would you like to try a dish?",
         }}
@@ -28,7 +31,7 @@ const Menu = () => {
       {/* desserts */}
       <MenuType
         banner={{
-          url: bannerURL2,
+          url: desertURL,
           heading: "DESSERTS",
           desc: "Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
           type: true,
@@ -41,7 +44,7 @@ const Menu = () => {
       {/* pizzas */}
       <MenuType
         banner={{
-          url: bannerURL2,
+          url: pizzaURL,
           heading: "PIZZA",
           desc: "Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
           type: true,
@@ -54,7 +57,7 @@ const Menu = () => {
       {/* salads */}
       <MenuType
         banner={{
-          url: bannerURL2,
+          url: saladURL,
           heading: "SALADS",
           desc: "Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
           type: true,
@@ -67,7 +70,7 @@ const Menu = () => {
       {/* soups */}
       <MenuType
         banner={{
-          url: bannerURL2,
+          url: soupURL,
           heading: "SOUPS",
           desc: "Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
           type: true,
