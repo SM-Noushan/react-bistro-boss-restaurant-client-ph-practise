@@ -38,7 +38,7 @@ const Menu = () => {
         }}
         dataType={{
           key: "dessertsMenu",
-          category: "dessert",
+          category: "desserts",
         }}
       />
       {/* pizzas */}
@@ -54,7 +54,7 @@ const Menu = () => {
           category: "pizza",
         }}
       />
-      {/* salads */}
+      {/* salad */}
       <MenuType
         banner={{
           url: saladURL,
@@ -77,7 +77,7 @@ const Menu = () => {
         }}
         dataType={{
           key: "soupsMenu",
-          category: "soup",
+          category: "soups",
         }}
       />
     </>

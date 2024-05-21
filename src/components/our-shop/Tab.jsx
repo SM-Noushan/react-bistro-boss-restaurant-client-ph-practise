@@ -13,7 +13,7 @@ const Tab = ({ index, label }) => {
       }`}
       onClick={() => setTabIndex(label)}
     >
-      {label}
+      {label === "offer" ? "Today's Pick" : label}
     </button>
   );
 };

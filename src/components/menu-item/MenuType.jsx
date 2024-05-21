@@ -3,6 +3,7 @@ import MenuItem from "./MenuItem";
 import useMenu from "../../hooks/useMenu";
 import SectionHeading from "../home/SectionHeading";
 import TitleBanner from "../shared/title-banner/TitleBanner";
+import { Link } from "react-router-dom";
 
 const MenuType = ({ banner, section, dataType }) => {
   const { url, heading: pageHeading, desc, type } = banner || {};
@@ -22,9 +23,12 @@ const MenuType = ({ banner, section, dataType }) => {
             : "No Data"}
         </div>
         <div className="text-center mt-12">
-          <button className="btn border-b-4 border-b-dark-937 hover:btn-outline uppercase text-xl font-medium text-dark-937">
+          <Link
+            to={`/shop?category=${category}`}
+            className="btn border-b-4 border-b-dark-937 hover:btn-outline uppercase text-xl font-medium text-dark-937"
+          >
             ORDER YOUR FAVOURITE FOOD
-          </button>
+          </Link>
         </div>
       </div>
     </>

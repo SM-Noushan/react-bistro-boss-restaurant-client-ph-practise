@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
+import queryString from "query-string";
 import useMenu from "../../hooks/useMenu";
 import Tab from "../../components/our-shop/Tab";
 import bannerURL from "../../assets/shop/banner2.jpg";
@@ -7,8 +9,20 @@ import MenuItemCard from "../../components/menu-item/MenuItemCard";
 import TitleBanner from "../../components/shared/title-banner/TitleBanner";
 
 const Shop = () => {
-  const tabs = ["salad", "pizza", "soups", "desserts", "drinks"];
-  const [tabIndex, setTabIndex] = useState("salad");
+  const tabs = ["salad", "pizza", "soups", "desserts", "drinks", "offer"];
+  const [params] = useSearchParams();
+  const [tabIndex, setTabIndex] = useState(params.get("category") || "salad");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const currentQuery = { category: tabIndex };
+    const url = queryString.stringifyUrl({
+      url: "/shop",
+      query: currentQuery,
+    });
+    navigate(url);
+  }, [tabIndex]);
+
   const { data, isLoading } = useMenu(`${tabIndex}Menu`, tabIndex);
   return (
     <>
