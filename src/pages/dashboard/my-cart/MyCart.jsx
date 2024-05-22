@@ -10,6 +10,7 @@ const MyCart = () => {
     "myCartData",
     `carts?userId=${user.uid}`
   );
+  
   return (
     <>
       <SectionHeading heading="WANNA ADD MORE?" subHeading="---My Cart---" />
