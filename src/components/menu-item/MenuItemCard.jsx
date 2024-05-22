@@ -58,7 +58,12 @@ const MenuItemCard = ({ item }) => {
             navigate("/login", {
               state: { from: location },
             });
-          }
+          } else
+            Swal.fire({
+              title: "Cancelled!",
+              text: "Request Cancelled",
+              icon: "error",
+            });
         });
     else {
       const cartItem = {
@@ -68,6 +73,7 @@ const MenuItemCard = ({ item }) => {
       // console.log(cartItem);
       try {
         const object = {
+          method: "post",
           url: "carts",
           data: cartItem,
         };

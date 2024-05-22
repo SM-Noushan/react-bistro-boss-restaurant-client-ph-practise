@@ -6,8 +6,9 @@ const useSendData = (onSuccess = () => {}) => {
 
   return useMutation({
     mutationFn: (object) => {
-      const { url, data } = object;
-      return axiosSecure.post(url, data);
+      const { method, url, data = null } = object;
+      if (method === "post") return axiosSecure.post(url, data);
+      if (method === "delete") return axiosSecure.delete(url);
     },
     onSuccess,
   });

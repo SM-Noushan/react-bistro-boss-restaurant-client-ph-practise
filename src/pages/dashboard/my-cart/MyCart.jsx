@@ -3,14 +3,89 @@ import SectionHeading from "../../../components/home/SectionHeading";
 import Spinner from "../../../components/shared/Spinner";
 import useAuth from "../../../hooks/useAuth";
 import useFetchData from "../../../hooks/useFetchData";
+import Swal from "sweetalert2";
+import "animate.css";
+import { useQueryClient } from "@tanstack/react-query";
+import useSendData from "../../../hooks/useSendData";
+
+const swalWithCustomButtons = Swal.mixin({
+  customClass: {
+    confirmButton: "btn btn-error text-white",
+    cancelButton: "btn btn-info text-white ml-4",
+  },
+  buttonsStyling: false,
+});
 
 const MyCart = () => {
+  const queryClient = useQueryClient();
   const { user } = useAuth();
+
   const { data, isLoading } = useFetchData(
     "myCartData",
     `carts?userId=${user.uid}`
   );
-  
+
+  const onSuccess = () => {
+    queryClient.invalidateQueries(["totalCartItems, myCartData"]);
+  };
+
+  const { mutateAsync: removeCartItemMutation } = useSendData(onSuccess);
+
+  const handleDelete = (id) => {
+    swalWithCustomButtons
+      .fire({
+        title: "Do you want to proceed?",
+        text: "Item will be removed from cart",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Remove",
+        showClass: {
+          popup: `
+          animate__animated
+          animate__fadeInUp
+          animate__faster
+        `,
+        },
+        hideClass: {
+          popup: `
+          animate__animated
+          animate__fadeOutDown
+          animate__faster
+        `,
+        },
+      })
+      .then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            const object = {
+              method: "delete",
+              url: `cart/${id}`,
+            };
+
+            const res = await removeCartItemMutation(object);
+            if (res.data?.deletedCount)
+              Swal.fire({
+                title: "Removed!",
+                text: "Successfully removed from cart",
+                icon: "success",
+              });
+          } catch (error) {
+            console.log(error);
+            Swal.fire({
+              title: "Error!",
+              text: "Please try again",
+              icon: "error",
+            });
+          }
+        } else
+          Swal.fire({
+            title: "Cancelled!",
+            text: "Request Cancelled",
+            icon: "error",
+          });
+      });
+  };
+
   return (
     <>
       <SectionHeading heading="WANNA ADD MORE?" subHeading="---My Cart---" />
@@ -20,50 +95,74 @@ const MyCart = () => {
           {isLoading ? (
             <Spinner />
           ) : data?.length > 0 ? (
-            <table className="table *:text-base">
-              {/* head */}
-              <thead className="bg-gold-054">
-                <tr className="uppercase text-white font-semibold">
-                  <th />
-                  <th>Item Image</th>
-                  <th>Item Name</th>
-                  <th>Base</th>
-                  <th>Quantity</th>
-                  <th>Price</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {/* row */}
-                {data.map((item, idx) => (
-                  <tr key={item._id} className="text-dark-003 hover">
-                    <th>{idx + 1}</th>
-                    <td>
-                      <img
-                        src={item.details.image}
-                        alt="menu-image"
-                        className="size-[75px] rounded-md object-cover object-center"
-                      />
-                    </td>
-                    <td className="">{item.details.name}</td>
-                    <td>${item.details.price}</td>
-                    <td>{item.quantity}</td>
-                    <td>
-                      $
-                      {(
-                        Number.parseFloat(item.quantity) *
-                        Number.parseFloat(item.details.price)
-                      ).toFixed(2)}
-                    </td>
-                    <td>
-                      <button className="bg-red-c1c/80 hover:bg-red-c1c w-fit p-3.5 rounded-lg text-white">
-                        <FaTrashCan />
-                      </button>
-                    </td>
+            <>
+              <div className="flex justify-between items-center font-cinzel font-bold text-dark-001 text-[32px] mb-6">
+                <h1>Total Orders: {data.length} </h1>
+                <h1>
+                  Total Price: $
+                  {data
+                    .reduce(
+                      (acc, curr) =>
+                        acc +
+                        Number.parseFloat(curr.quantity) *
+                          Number.parseFloat(curr.details.price),
+                      0
+                    )
+                    .toFixed(2)}
+                </h1>
+                <button className="bg-gold-054 px-4 py-3 rounded-md text-xl text-white">
+                  Pay{" "}
+                </button>
+              </div>
+
+              <table className="table *:text-base">
+                {/* head */}
+                <thead className="bg-gold-054">
+                  <tr className="uppercase text-white font-semibold">
+                    <th />
+                    <th>Item Image</th>
+                    <th>Item Name</th>
+                    <th>Base</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {/* row */}
+                  {data.map((item, idx) => (
+                    <tr key={item._id} className="text-dark-003 hover">
+                      <th>{idx + 1}</th>
+                      <td>
+                        <img
+                          src={item.details.image}
+                          alt="menu-image"
+                          className="size-[75px] rounded-md object-cover object-center"
+                        />
+                      </td>
+                      <td className="">{item.details.name}</td>
+                      <td>${item.details.price}</td>
+                      <td>{item.quantity}</td>
+                      <td>
+                        $
+                        {(
+                          Number.parseFloat(item.quantity) *
+                          Number.parseFloat(item.details.price)
+                        ).toFixed(2)}
+                      </td>
+                      <td>
+                        <button
+                          onClick={() => handleDelete(item._id)}
+                          className="bg-red-c1c/80 hover:bg-red-c1c w-fit p-3.5 rounded-lg text-white"
+                        >
+                          <FaTrashCan />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </>
           ) : (
             <div
               role="alert"
