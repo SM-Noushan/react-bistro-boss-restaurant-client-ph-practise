@@ -1,11 +1,11 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import PropTypes from "prop-types";
 import Swal from "sweetalert2";
 import "animate.css";
 import useAuth from "../../hooks/useAuth";
-import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useSendData from "../../hooks/useSendData";
 
 const swalWithCustomButtons = Swal.mixin({
   customClass: {
@@ -21,26 +21,14 @@ const MenuItemCard = ({ item }) => {
   const { user } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  const axiosSecure = useAxiosSecure();
 
-  const { mutateAsync: addToCartMutation } = useMutation({
-    mutationFn: async (data) => {
-      try {
-        const res = await axiosSecure.post("carts", data);
-        console.log(res);
-        if (res.data?.upsertedCount) toast.success("Added to cart");
-        if (res.data?.modifiedCount) toast.success("Increased item quantity");
-      } catch (error) {
-        console.log(error);
-        toast.error("Failed! Try again");
-      }
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries(["totalCartItems"]);
-    },
-  });
+  const onSuccess = () => {
+    queryClient.invalidateQueries(["totalCartItems"]);
+  };
 
-  const handleCart = () => {
+  const { mutateAsync: addToCartMutation } = useSendData(onSuccess);
+
+  const handleCart = async () => {
     if (!user)
       swalWithCustomButtons
         .fire({
@@ -78,7 +66,19 @@ const MenuItemCard = ({ item }) => {
         userID: user?.uid,
       };
       // console.log(cartItem);
-      addToCartMutation(cartItem);
+      try {
+        const object = {
+          url: "carts",
+          data: cartItem,
+        };
+        const res = await addToCartMutation(object);
+        // console.log(res);
+        if (res.data?.upsertedCount) toast.success("Added to cart");
+        if (res.data?.modifiedCount) toast.success("Increased item quantity");
+      } catch (error) {
+        console.log(error);
+        toast.error("Failed! Try again");
+      }
     }
   };
 
