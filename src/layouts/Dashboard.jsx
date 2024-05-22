@@ -5,7 +5,8 @@ const Dashboard = () => {
   return (
     <div className="flex">
       <Sidebar />
-      <div className="flex-1">
+      {/* content */}
+      <div className="flex-1 py-12 max-w-screen-lg mx-auto">
         <Outlet />
       </div>
     </div>

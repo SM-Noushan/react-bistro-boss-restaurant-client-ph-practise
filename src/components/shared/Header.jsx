@@ -113,7 +113,7 @@ const Header = () => {
           </div>
           <div className="flex justify-between items-center gap-x-4">
             <NavLink
-              to="/my-cart"
+              to="dashboard/my-cart"
               className={({ isActive }) =>
                 `relative uppercase text-xl font-extrabold ml-2.5 bg-green-800 rounded-full p-2.5 mr-20 ${
                   isActive && "*:text-[#EEFF25]"
