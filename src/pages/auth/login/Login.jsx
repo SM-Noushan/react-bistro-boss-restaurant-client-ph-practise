@@ -1,7 +1,6 @@
 import {
   loadCaptchaEnginge,
   LoadCanvasTemplate,
-  LoadCanvasTemplateNoReload,
   validateCaptcha,
 } from "react-simple-captcha";
 import { useEffect, useRef, useState } from "react";
@@ -9,13 +8,16 @@ import heroImg from "../../../assets/others/authentication2.png";
 import bgImg from "../../../assets/others/authentication.png";
 import { toast } from "react-toastify";
 import useAuth from "../../../hooks/useAuth";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const { logIn, loading, setLoading } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const captchaRef = useRef("");
   const [captchaValidate, setCaptchaValidate] = useState(false);
+  const redirect =
+    location.state?.from?.pathname + location.state?.from?.search || "/";
 
   useEffect(() => {
     loadCaptchaEnginge(6, "rgb(209 160 84 / 0.7)", "white");
@@ -31,7 +33,7 @@ const Login = () => {
       await logIn(email, passowrd);
       form.reset();
       toast.success("Signin successful");
-      navigate("/");
+      navigate(redirect);
     } catch (error) {
       setLoading(false);
       console.log("error >> ", error);
