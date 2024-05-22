@@ -1,11 +1,11 @@
-import Swal from "sweetalert2";
-import PropTypes from "prop-types";
-import { toast } from "react-toastify";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useLocation, useNavigate } from "react-router-dom";
-import useAxiosSecure from "../../hooks/useAxiosSecure";
-import useAuth from "../../hooks/useAuth";
+import { toast } from "react-toastify";
+import PropTypes from "prop-types";
+import Swal from "sweetalert2";
 import "animate.css";
+import useAuth from "../../hooks/useAuth";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const swalWithCustomButtons = Swal.mixin({
   customClass: {
@@ -16,6 +16,7 @@ const swalWithCustomButtons = Swal.mixin({
 });
 
 const MenuItemCard = ({ item }) => {
+  const queryClient = useQueryClient();
   const { name, recipe, image, price, _id } = item || {};
   const { user } = useAuth();
   const location = useLocation();
@@ -27,12 +28,15 @@ const MenuItemCard = ({ item }) => {
       try {
         const res = await axiosSecure.post("carts", data);
         console.log(res);
-        if (res.data?.upsertedCount || res.data?.modifiedCount)
-          toast.success("Successfully added to cart");
+        if (res.data?.upsertedCount) toast.success("Added to cart");
+        if (res.data?.modifiedCount) toast.success("Increased item quantity");
       } catch (error) {
         console.log(error);
         toast.error("Failed! Try again");
       }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["totalCartItems"]);
     },
   });
 

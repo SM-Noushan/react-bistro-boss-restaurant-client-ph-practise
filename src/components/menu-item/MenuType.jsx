@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import MenuItem from "./MenuItem";
-import useMenu from "../../hooks/useMenu";
+import useFetchData from "../../hooks/useFetchData";
 import SectionHeading from "../home/SectionHeading";
 import TitleBanner from "../shared/title-banner/TitleBanner";
 import { Link } from "react-router-dom";
@@ -9,7 +9,7 @@ const MenuType = ({ banner, section, dataType }) => {
   const { url, heading: pageHeading, desc, type } = banner || {};
   const { heading, subHeading } = section || {};
   const { key, category } = dataType || {};
-  const { data, isLoading } = useMenu(key, category);
+  const { data, isLoading } = useFetchData(key, category);
   return (
     <>
       <TitleBanner imgURL={url} heading={pageHeading} desc={desc} type={type} />

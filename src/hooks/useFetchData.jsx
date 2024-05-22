@@ -1,13 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import PropTypes from "prop-types";
+import useAxiosSecure from "./useAxiosSecure";
 
-const useMenu = (qKey, url) => {
+const useFetchData = (qKey, url, dependencies = {}) => {
+  const axiosSecure = useAxiosSecure();
   const { data, isLoading, refetch, error } = useQuery({
-    queryKey: [qKey],
+    queryKey: [qKey, dependencies],
     queryFn: async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/${url}`);
+        const res = await axiosSecure.get(url);
         return await res.data;
       } catch (error) {
         return Promise.reject(error);
@@ -17,9 +18,9 @@ const useMenu = (qKey, url) => {
   return { data, isLoading, refetch, error };
 };
 
-useMenu.propTypes = {
+useFetchData.propTypes = {
   qKey: PropTypes.string.isRequired,
   url: PropTypes.string.isRequired,
 };
 
-export default useMenu;
+export default useFetchData;

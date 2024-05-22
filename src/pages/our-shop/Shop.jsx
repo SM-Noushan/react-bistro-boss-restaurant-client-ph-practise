@@ -2,7 +2,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useState } from "react";
 import queryString from "query-string";
-import useMenu from "../../hooks/useMenu";
+import useFetchData from "../../hooks/useFetchData";
 import Tab from "../../components/our-shop/Tab";
 import bannerURL from "../../assets/shop/banner2.jpg";
 import MenuItemCard from "../../components/menu-item/MenuItemCard";
@@ -24,7 +24,7 @@ const Shop = () => {
     navigate(url);
   };
 
-  const { data, isLoading } = useMenu(
+  const { data, isLoading } = useFetchData(
     `${tabIndex}Menu`,
     `menu?category=${tabIndex}`
   );

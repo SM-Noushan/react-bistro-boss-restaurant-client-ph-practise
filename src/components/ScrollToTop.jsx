@@ -8,7 +8,7 @@ const ScrollToTop = ({ children }) => {
   useEffect(() => {
     if (navigationType !== "POP")
       window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-  }, [location, navigationType]);
+  }, [location.pathname]);
   return children;
 };
 

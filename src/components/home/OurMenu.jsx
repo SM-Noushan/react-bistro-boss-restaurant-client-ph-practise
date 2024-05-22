@@ -1,9 +1,12 @@
 import SectionHeading from "./SectionHeading";
 import MenuItem from "../menu-item/MenuItem";
-import useMenu from "../../hooks/useMenu";
+import useFetchData from "../../hooks/useFetchData";
 
 const OurMenu = () => {
-  const { data, isLoading } = useMenu("popularMenu", "menu?category=popular");
+  const { data, isLoading } = useFetchData(
+    "popularMenu",
+    "menu?category=popular"
+  );
   return (
     <>
       <SectionHeading subHeading="Check it out" heading="FROM OUR MENU" />
