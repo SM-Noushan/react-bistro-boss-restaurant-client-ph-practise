@@ -1,5 +1,15 @@
 import { Link, NavLink } from "react-router-dom";
-import { FaBars, FaBook, FaCartShopping, FaHotel, FaHouse, FaList, FaUsersGear, FaUtensils } from "react-icons/fa6";
+import {
+  FaBars,
+  FaBook,
+  FaCartShopping,
+  FaHotel,
+  FaHouse,
+  FaList,
+  FaUsersGear,
+  FaUtensils,
+} from "react-icons/fa6";
+import useAdmin from "../../../hooks/useAdmin";
 
 const menuItem = (icon, name, url) => (
   <NavLink
@@ -17,7 +27,7 @@ const menuItem = (icon, name, url) => (
 );
 
 const Sidebar = () => {
-  const admin = true;
+  const { isAdmin } = useAdmin();
   return (
     <div className="drawer lg:drawer-open font-cinzel w-fit z-50">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
@@ -41,7 +51,7 @@ const Sidebar = () => {
               Restaurant
             </span>
           </Link>
-          {admin ? (
+          {isAdmin?.role ? (
             <>
               {menuItem(
                 <FaHouse className="mb-0.5" />,
