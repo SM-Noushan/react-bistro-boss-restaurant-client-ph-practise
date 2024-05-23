@@ -19,22 +19,72 @@ const AllUsers = () => {
 
   const { data, isLoading } = useFetchData(
     "allUserInfo",
-    "users",
+    "admin/users",
     () => {},
     true
   );
 
   const onSuccess = () => {
-    queryClient.invalidateQueries(["totalCartItems, myCartData"]);
+    queryClient.invalidateQueries(["allUserInfo"]);
   };
 
-  //   const { mutateAsync: removeCartItemMutation } = useSendData(onSuccess);
+  const { mutateAsync: changeUserRoleMutation } = useSendData(onSuccess);
+  const { mutateAsync: removeUserMutation } = useSendData(onSuccess);
+
+  const handleUserRole = (user) => {
+    swalWithCustomButtons
+      .fire({
+        title: "Change role to admin?",
+        text: "User role will change to admin",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Change",
+        showClass: {
+          popup: `
+          animate__animated
+          animate__fadeInUp
+          animate__faster
+        `,
+        },
+        hideClass: {
+          popup: `
+          animate__animated
+          animate__fadeOutDown
+          animate__faster
+        `,
+        },
+      })
+      .then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            const object = {
+              method: "patch",
+              url: `admin/user/${user._id}`,
+            };
+            const res = await changeUserRoleMutation(object);
+            if (res.data?.modifiedCount)
+              Swal.fire({
+                title: "Role!",
+                text: `${user.name}'s role changed to admin`,
+                icon: "success",
+              });
+          } catch (error) {
+            console.log(error);
+            Swal.fire({
+              title: "Error!",
+              text: "Please try again",
+              icon: "error",
+            });
+          }
+        }
+      });
+  };
 
   const handleDelete = (id) => {
     swalWithCustomButtons
       .fire({
         title: "Do you want to proceed?",
-        text: "Item will be removed from cart",
+        text: "User will be removed",
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "Remove",
@@ -55,26 +105,26 @@ const AllUsers = () => {
       })
       .then(async (result) => {
         if (result.isConfirmed) {
-          //   try {
-          //     const object = {
-          //       method: "delete",
-          //       url: `cart/${id}`,
-          //     };
-          //     const res = await removeCartItemMutation(object);
-          //     if (res.data?.deletedCount)
-          //       Swal.fire({
-          //         title: "Removed!",
-          //         text: "Successfully removed from cart",
-          //         icon: "success",
-          //       });
-          //   } catch (error) {
-          //     console.log(error);
-          //     Swal.fire({
-          //       title: "Error!",
-          //       text: "Please try again",
-          //       icon: "error",
-          //     });
-          //   }
+          try {
+            const object = {
+              method: "delete",
+              url: `user/${id}`,
+            };
+            const res = await removeUserMutation(object);
+            if (res.data?.deletedCount)
+              Swal.fire({
+                title: "Removed!",
+                text: "Successfully removed user",
+                icon: "success",
+              });
+          } catch (error) {
+            console.log(error);
+            Swal.fire({
+              title: "Error!",
+              text: "Please try again",
+              icon: "error",
+            });
+          }
         } else
           Swal.fire({
             title: "Cancelled!",
@@ -118,14 +168,21 @@ const AllUsers = () => {
                       <td>{user.name}</td>
                       <td>{user.email}</td>
                       <td>
-                        <div className="bg-gold-054 rounded-md p-3.5 text-lg text-white w-fit">
-                          <FaUsersGear />
-                        </div>
+                        {user?.role === "admin" ? (
+                          "Admin"
+                        ) : (
+                          <button
+                            onClick={() => handleUserRole(user)}
+                            className="bg-gold-054/80 hover:bg-gold-054 p-3.5 rounded-lg text-white w-fit"
+                          >
+                            <FaUsersGear />
+                          </button>
+                        )}
                       </td>
                       <td>
                         <button
                           onClick={() => handleDelete(user._id)}
-                          className="bg-red-c1c/80 hover:bg-red-c1c w-fit p-3.5 rounded-lg text-white"
+                          className="bg-red-c1c/80 hover:bg-red-c1c p-3.5 rounded-lg text-white w-fit"
                         >
                           <FaTrashCan />
                         </button>
@@ -153,7 +210,7 @@ const AllUsers = () => {
                   d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                 ></path>
               </svg>
-              <span>Empty Cart</span>
+              <span>No User</span>
             </div>
           )}
         </div>
