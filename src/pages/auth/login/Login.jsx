@@ -9,9 +9,11 @@ import bgImg from "../../../assets/others/authentication.png";
 import { toast } from "react-toastify";
 import useAuth from "../../../hooks/useAuth";
 import { useLocation, useNavigate } from "react-router-dom";
+import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
 const Login = () => {
   const { logIn, loading, setLoading } = useAuth();
+  const axiosPublic = useAxiosPublic();
   const navigate = useNavigate();
   const location = useLocation();
   const captchaRef = useRef("");
@@ -27,13 +29,21 @@ const Login = () => {
     e.preventDefault();
     const form = e.target;
     const email = form.email.value;
-    const passowrd = form.password.value;
+    const passoword = form.password.value;
     // console.log({ email, passowrd });
     try {
-      await logIn(email, passowrd);
+      const loginResponse = await logIn(email, passoword);
+      // const userInfo = {
+      //   name: "Unknown",
+      //   email: loginResponse.user.email,
+      //   uid: loginResponse.user.uid,
+      // };
+      // const storeUserInfoResponse = await axiosPublic.post("user", userInfo);
+      // if (storeUserInfoResponse.data.insertedId) {
       form.reset();
       toast.success("Signin successful");
       navigate(redirect);
+      // }
     } catch (error) {
       setLoading(false);
       console.log("error >> ", error);
