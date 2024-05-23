@@ -18,7 +18,7 @@ const menuItem = (icon, name, url) => (
 
 const Sidebar = () => {
   return (
-    <div className="drawer lg:drawer-open font-cinzel w-fit">
+    <div className="drawer lg:drawer-open font-cinzel w-fit z-50">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
       <label
         htmlFor="my-drawer-2"
@@ -32,7 +32,7 @@ const Sidebar = () => {
           aria-label="close sidebar"
           className="drawer-overlay"
         ></label>
-        <menu className="menu px-10 py-14 w-80 min-h-dvh bg-gold-054 text-dark-001 text-base space-y-6">
+        <menu className="menu px-10 py-14 w-80 min-h-full bg-gold-054 text-dark-001 text-base space-y-6">
           {/* Sidebar content here */}
           <Link to="/" className="text-2xl font-black mb-14">
             Bistro Boss <br />

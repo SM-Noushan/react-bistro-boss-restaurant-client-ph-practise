@@ -63,7 +63,8 @@ const Header = () => {
   const { data: totalCartItems } = useFetchData(
     "totalCartItems",
     `carts/total/?userUID=${user?.uid}`,
-    user?.uid
+    user?.uid,
+    true
   );
   const navigate = useNavigate();
 

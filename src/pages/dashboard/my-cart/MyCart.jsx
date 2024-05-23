@@ -22,7 +22,9 @@ const MyCart = () => {
 
   const { data, isLoading } = useFetchData(
     "myCartData",
-    `carts?userId=${user.uid}`
+    `carts?userId=${user.uid}`,
+    {},
+    true
   );
 
   const onSuccess = () => {
