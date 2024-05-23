@@ -1,12 +1,12 @@
 import { FaTrashCan } from "react-icons/fa6";
-import SectionHeading from "../../../components/home/SectionHeading";
-import Spinner from "../../../components/shared/Spinner";
-import useAuth from "../../../hooks/useAuth";
-import useFetchData from "../../../hooks/useFetchData";
+import SectionHeading from "../../../../components/home/SectionHeading";
+import Spinner from "../../../../components/shared/Spinner";
+import useAuth from "../../../../hooks/useAuth";
+import useFetchData from "../../../../hooks/useFetchData";
 import Swal from "sweetalert2";
 import "animate.css";
 import { useQueryClient } from "@tanstack/react-query";
-import useSendData from "../../../hooks/useSendData";
+import useSendData from "../../../../hooks/useSendData";
 
 const swalWithCustomButtons = Swal.mixin({
   customClass: {

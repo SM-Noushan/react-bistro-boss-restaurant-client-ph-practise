@@ -1,5 +1,5 @@
 import { Link, NavLink } from "react-router-dom";
-import { FaBars, FaCartShopping, FaHotel, FaHouse } from "react-icons/fa6";
+import { FaBars, FaBook, FaCartShopping, FaHotel, FaHouse, FaList, FaUsersGear, FaUtensils } from "react-icons/fa6";
 
 const menuItem = (icon, name, url) => (
   <NavLink
@@ -17,6 +17,7 @@ const menuItem = (icon, name, url) => (
 );
 
 const Sidebar = () => {
+  const admin = true;
   return (
     <div className="drawer lg:drawer-open font-cinzel w-fit z-50">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
@@ -40,16 +41,52 @@ const Sidebar = () => {
               Restaurant
             </span>
           </Link>
-          {menuItem(<FaHouse className="mb-0.5" />, "User Home", "/dashboard")}
-          {menuItem(
-            <FaHotel className="mb-0.5" />,
-            "reservation",
-            "reservation"
-          )}
-          {menuItem(
-            <FaCartShopping className="mb-0.5" />,
-            "My Cart",
-            "my-cart"
+          {admin ? (
+            <>
+              {menuItem(
+                <FaHouse className="mb-0.5" />,
+                "Admin Home",
+                "/dashboard/admin/home"
+              )}
+              {menuItem(
+                <FaUtensils className="mb-0.5" />,
+                "Add Item",
+                "/dashboard/admin/item/add"
+              )}
+              {menuItem(
+                <FaList className="mb-0.5" />,
+                "Manage Items",
+                "/dashboard/admin/item/manage"
+              )}
+              {menuItem(
+                <FaBook className="mb-0.5" />,
+                "Manage Bookings",
+                "/dashboard/admin/bookings/manage"
+              )}
+              {menuItem(
+                <FaUsersGear className="mb-0.5" />,
+                "All Users",
+                "/dashboard/admin/users"
+              )}
+            </>
+          ) : (
+            <>
+              {menuItem(
+                <FaHouse className="mb-0.5" />,
+                "User Home",
+                "/dashboard"
+              )}
+              {menuItem(
+                <FaHotel className="mb-0.5" />,
+                "reservation",
+                "reservation"
+              )}
+              {menuItem(
+                <FaCartShopping className="mb-0.5" />,
+                "My Cart",
+                "my-cart"
+              )}
+            </>
           )}
         </menu>
       </div>
