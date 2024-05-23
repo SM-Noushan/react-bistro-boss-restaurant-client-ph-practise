@@ -33,17 +33,21 @@ const Login = () => {
     // console.log({ email, passowrd });
     try {
       const loginResponse = await logIn(email, passoword);
-      // const userInfo = {
-      //   name: "Unknown",
-      //   email: loginResponse.user.email,
-      //   uid: loginResponse.user.uid,
-      // };
-      // const storeUserInfoResponse = await axiosPublic.post("user", userInfo);
-      // if (storeUserInfoResponse.data.insertedId) {
-      form.reset();
-      toast.success("Signin successful");
-      navigate(redirect);
-      // }
+      const userInfo = {
+        name: "Unknown",
+        email: loginResponse.user.email,
+        uid: loginResponse.user.uid,
+      };
+      const storeUserInfoResponse = await axiosPublic.post("user", userInfo);
+      // console.log(storeUserInfoResponse.data);
+      if (
+        storeUserInfoResponse.data.matchedCount ||
+        storeUserInfoResponse.data.upsertedCount
+      ) {
+        form.reset();
+        toast.success("Signin successful");
+        navigate(redirect);
+      }
     } catch (error) {
       setLoading(false);
       console.log("error >> ", error);
