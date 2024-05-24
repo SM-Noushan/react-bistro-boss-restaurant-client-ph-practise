@@ -79,6 +79,8 @@ const router = createBrowserRouter([
             <AddItem update={true} />,
           </AdminRoutes>
         ),
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/menu/${params.id}`),
       },
     ],
   },

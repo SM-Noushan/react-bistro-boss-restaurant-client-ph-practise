@@ -4,6 +4,9 @@ import { useForm } from "react-hook-form";
 import { FaUtensils } from "react-icons/fa6";
 import useAxiosSecure from "../../../../../../hooks/useAxiosSecure";
 import SectionHeading from "../../../../../../components/home/SectionHeading";
+import { useLoaderData, useParams } from "react-router-dom";
+import { useEffect } from "react";
+import PropTypes from "prop-types";
 
 // Error message for form fields
 const errorMsg = (message) => (
@@ -31,7 +34,9 @@ const generateUniqueFileName = (originalFileName) => {
   return `${timestamp}_${randomString}_${originalFileName}`;
 };
 
-const AddItem = () => {
+const AddItem = ({ update = false }) => {
+  const item = useLoaderData() || {};
+  const { id } = useParams() || null;
   const {
     register,
     handleSubmit,
@@ -40,15 +45,34 @@ const AddItem = () => {
     setValue,
   } = useForm();
   const axiosSecure = useAxiosSecure();
+  useEffect(() => {
+    if (update)
+      Object.keys(item).forEach((key) => {
+        if (key != "_id" && key != "image") setValue(key, item[key]);
+      });
+  }, []);
 
   const handleForm = async (data) => {
+    // console.log(data);
+    if (update) {
+      try {
+        data.price = parseFloat(data.price);
+        const resDB = await axiosSecure.put(`/menu/${id}`, data);
+        // console.log(resDB);
+        if (resDB.data.modifiedCount) {
+          return toast.success("Recipe updated");
+        }
+      } catch (error) {
+        console.log(error);
+        return toast.error("Failed! Please try again");
+      }
+    }
     try {
       const imageFile = new FormData();
       const originalFileName = data.image[0].name;
       const uniqueFileName = generateUniqueFileName(originalFileName);
       console.log(uniqueFileName, originalFileName);
       imageFile.append("image", data.image[0], uniqueFileName);
-      console.log(imageFile);
       const res = await axios.post(
         `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_API}`,
         imageFile
@@ -57,20 +81,23 @@ const AddItem = () => {
         data.image = res.data.data.display_url;
         data.price = parseFloat(data.price);
         const resDB = await axiosSecure.post("/menu", data);
-        console.log(resDB);
+        // console.log(resDB);
         if (resDB.data.insertedId) {
           reset();
-          toast.success("Recipe added");
+          return toast.success("Recipe added");
         }
       }
     } catch (error) {
       console.log(error);
-      toast.error("Failed! Please try again");
+      return toast.error("Failed! Please try again");
     }
   };
   return (
     <>
-      <SectionHeading heading="ADD AN ITEM" subHeading="What's new?" />
+      <SectionHeading
+        heading={update ? "Update Item" : "ADD AN ITEM"}
+        subHeading={update ? "Made a Mistake?" : "What's new?"}
+      />
       <div className="p-12 bg-dark-007">
         <form onSubmit={handleSubmit(handleForm)} className="space-y-4">
           {/* recipe name */}
@@ -136,6 +163,7 @@ const AddItem = () => {
                 type="number"
                 placeholder="Price"
                 min={0}
+                step={0.01}
                 className="input input-bordered placeholder:text-dark-1a1"
                 {...register("price", {
                   required: true,
@@ -167,13 +195,15 @@ const AddItem = () => {
           </div>
 
           {/* recipe image */}
-          <input
-            name="recipeImage"
-            type="file"
-            className="file-input file:bg-dark-006 file:border-none file:text-dark-002 w-full max-w-xs bg-dark-007"
-            {...register("image", { required: true })}
-          />
-          {errors?.image && errorMsg("Upload recipe image")}
+          {update || (
+            <input
+              name="recipeImage"
+              type="file"
+              className="file-input file:bg-dark-006 file:border-none file:text-dark-002 w-full max-w-xs bg-dark-007"
+              {...register("image", { required: true })}
+            />
+          )}
+          {update || (errors?.image && errorMsg("Upload recipe image"))}
 
           {/* form submit button */}
           <div className="form-control mt-6 w-fit">
@@ -181,8 +211,14 @@ const AddItem = () => {
               type="submit"
               className="btn bg-[linear-gradient(90deg,rgba(131,93,35,1)0%,rgba(181,129,48,1)100%)] hover:brightness-90 text-white text-xl font-bold disabled:bg-gold-054/50 px-6"
             >
-              Add Item
-              <FaUtensils />
+              {update ? (
+                "Update Recipe Details"
+              ) : (
+                <>
+                  Add Item
+                  <FaUtensils />
+                </>
+              )}
               {/* {loading && (
                 <span className="loading loading-dots loading-md"></span>
               )} */}
@@ -192,6 +228,10 @@ const AddItem = () => {
       </div>
     </>
   );
+};
+
+AddItem.propTypes = {
+  update: PropTypes.bool,
 };
 
 export default AddItem;
