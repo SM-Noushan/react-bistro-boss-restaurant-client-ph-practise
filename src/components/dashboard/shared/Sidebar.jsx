@@ -29,7 +29,7 @@ const menuItem = (icon, name, url) => (
 const Sidebar = () => {
   const { isAdmin } = useAdmin();
   return (
-    <div className="drawer lg:drawer-open font-cinzel w-fit z-50">
+    <div className="drawer !min-h-full lg:drawer-open font-cinzel w-fit z-50">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
       <label
         htmlFor="my-drawer-2"

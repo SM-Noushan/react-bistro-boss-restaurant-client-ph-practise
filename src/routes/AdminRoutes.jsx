@@ -1,20 +1,20 @@
-import { Navigate, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ProtoTypes from "prop-types";
 import Spinner from "../components/shared/Spinner";
 import useAuth from "../hooks/useAuth";
 import useAdmin from "../hooks/useAdmin";
 
 const AdminRoutes = ({ children }) => {
-  const { user, loading, logOut } = useAuth();
+  const { user, loading } = useAuth();
   const { isAdmin, isAdminLoading } = useAdmin();
   const location = useLocation();
+  const navigate = useNavigate();
   if (loading || isAdminLoading) return <Spinner />;
   if (user && isAdmin.role) return children;
-  if (user)
-    logOut().then(() => (
-      <Navigate state={{ from: location }} to="/login"></Navigate>
-    ));
-  return <Navigate state={{ from: location }} to="/login"></Navigate>;
+  if (user) return navigate(-1);
+  return navigate("/login", {
+    state: { from: location },
+  });
 };
 
 AdminRoutes.propTypes = {
