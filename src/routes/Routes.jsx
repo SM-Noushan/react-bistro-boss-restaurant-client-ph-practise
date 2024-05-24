@@ -64,6 +64,22 @@ const router = createBrowserRouter([
           </AdminRoutes>
         ),
       },
+      {
+        path: "admin/item/manage",
+        element: (
+          <AdminRoutes>
+            <MyCart role="manage" />,
+          </AdminRoutes>
+        ),
+      },
+      {
+        path: `admin/item/update/:id`,
+        element: (
+          <AdminRoutes>
+            <AddItem update={true} />,
+          </AdminRoutes>
+        ),
+      },
     ],
   },
   { path: "login", element: <Login /> },

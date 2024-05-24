@@ -1,4 +1,4 @@
-import { FaTrashCan } from "react-icons/fa6";
+import { FaPencil, FaTrashCan } from "react-icons/fa6";
 import SectionHeading from "../../../../components/home/SectionHeading";
 import Spinner from "../../../../components/shared/Spinner";
 import useAuth from "../../../../hooks/useAuth";
@@ -7,6 +7,8 @@ import Swal from "sweetalert2";
 import "animate.css";
 import { useQueryClient } from "@tanstack/react-query";
 import useSendData from "../../../../hooks/useSendData";
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 const swalWithCustomButtons = Swal.mixin({
   customClass: {
@@ -16,15 +18,15 @@ const swalWithCustomButtons = Swal.mixin({
   buttonsStyling: false,
 });
 
-const MyCart = () => {
+const MyCart = ({ role = null }) => {
   const queryClient = useQueryClient();
   const { user } = useAuth();
 
   const { data, isLoading } = useFetchData(
-    "myCartData",
-    `carts?userId=${user.uid}`,
+    `${role === "manage" ? "allMenuItem" : "myCartData"}`,
+    `${role === "manage" ? "menu" : `carts?userId=${user.uid}`}`,
     {},
-    true
+    `${role === "manage" ? false : true}`
   );
 
   const onSuccess = () => {
@@ -90,7 +92,10 @@ const MyCart = () => {
 
   return (
     <>
-      <SectionHeading heading="WANNA ADD MORE?" subHeading="---My Cart---" />
+      <SectionHeading
+        heading={role === "manage" ? "MANAGE ALL ITEMS" : "WANNA ADD MORE?"}
+        subHeading={role === "manage" ? "Hurry Up" : "My Cart"}
+      />
 
       <div>
         <div className="overflow-x-auto rounded-t-xl font-inter">
@@ -99,22 +104,28 @@ const MyCart = () => {
           ) : data?.length > 0 ? (
             <>
               <div className="flex justify-between items-center font-cinzel font-bold text-dark-001 text-[32px] mb-6">
-                <h1>Total Orders: {data.length} </h1>
                 <h1>
-                  Total Price: $
-                  {data
-                    .reduce(
-                      (acc, curr) =>
-                        acc +
-                        Number.parseFloat(curr.quantity) *
-                          Number.parseFloat(curr.details.price),
-                      0
-                    )
-                    .toFixed(2)}
+                  Total {role === "manage" ? "Items" : "Orders"}: {data.length}{" "}
                 </h1>
-                <button className="bg-gold-054 px-4 py-3 rounded-md text-xl text-white">
-                  Pay{" "}
-                </button>
+                {role !== "manage" && (
+                  <>
+                    <h1>
+                      Total Price: $
+                      {data
+                        .reduce(
+                          (acc, curr) =>
+                            acc +
+                            Number.parseFloat(curr.quantity) *
+                              Number.parseFloat(curr.details.price),
+                          0
+                        )
+                        .toFixed(2)}
+                    </h1>
+                    <button className="bg-gold-054 px-4 py-3 rounded-md text-xl text-white">
+                      Pay{" "}
+                    </button>
+                  </>
+                )}
               </div>
 
               <table className="table *:text-base">
@@ -124,9 +135,9 @@ const MyCart = () => {
                     <th />
                     <th>Item Image</th>
                     <th>Item Name</th>
-                    <th>Base</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
+                    <th>{role === "manage" ? "Price" : "Base"}</th>
+                    {role !== "manage" && <th>Quantity</th>}
+                    {role !== "manage" && <th>Price</th>}
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -137,22 +148,32 @@ const MyCart = () => {
                       <th>{idx + 1}</th>
                       <td>
                         <img
-                          src={item.details.image}
+                          src={item.details?.image || item.image}
                           alt="menu-image"
                           className="size-[75px] rounded-md object-cover object-center"
                         />
                       </td>
-                      <td className="">{item.details.name}</td>
-                      <td>${item.details.price}</td>
-                      <td>{item.quantity}</td>
-                      <td>
-                        $
-                        {(
-                          Number.parseFloat(item.quantity) *
-                          Number.parseFloat(item.details.price)
-                        ).toFixed(2)}
-                      </td>
-                      <td>
+                      <td className="">{item.details?.name || item.name}</td>
+                      <td>${item.details?.price || item.price}</td>
+                      {role !== "manage" && <td>{item.quantity}</td>}
+                      {role !== "manage" && (
+                        <td>
+                          $
+                          {(
+                            Number.parseFloat(item.quantity) *
+                            Number.parseFloat(item.details.price)
+                          ).toFixed(2)}
+                        </td>
+                      )}
+                      <td className="space-x-4">
+                        {role === "manage" && (
+                          <Link
+                            to={`/dashboard/admin/item/update/${item._id}`}
+                            className="btn bg-gold-054/80 hover:bg-gold-054 w-fit p-3.5 rounded-lg text-white"
+                          >
+                            <FaPencil />
+                          </Link>
+                        )}
                         <button
                           onClick={() => handleDelete(item._id)}
                           className="bg-red-c1c/80 hover:bg-red-c1c w-fit p-3.5 rounded-lg text-white"
@@ -190,6 +211,10 @@ const MyCart = () => {
       </div>
     </>
   );
+};
+
+MyCart.propTypes = {
+  role: PropTypes.string,
 };
 
 export default MyCart;
