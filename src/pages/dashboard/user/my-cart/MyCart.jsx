@@ -30,19 +30,23 @@ const MyCart = ({ role = null }) => {
   );
 
   const onSuccess = () => {
-    queryClient.invalidateQueries(["totalCartItems, myCartData"]);
+    role === "manage"
+      ? queryClient.invalidateQueries(["allMenuItem"])
+      : queryClient.invalidateQueries(["totalCartItems, myCartData"]);
   };
 
-  const { mutateAsync: removeCartItemMutation } = useSendData(onSuccess);
+  const { mutateAsync: removeItemMutation } = useSendData(onSuccess);
 
   const handleDelete = (id) => {
     swalWithCustomButtons
       .fire({
         title: "Do you want to proceed?",
-        text: "Item will be removed from cart",
+        text: `Item will be ${
+          role === "manage" ? "deleted" : "removed from the cart"
+        }`,
         icon: "warning",
         showCancelButton: true,
-        confirmButtonText: "Remove",
+        confirmButtonText: role === "manage" ? "Delete" : "Remove",
         showClass: {
           popup: `
           animate__animated
@@ -63,14 +67,19 @@ const MyCart = ({ role = null }) => {
           try {
             const object = {
               method: "delete",
-              url: `cart/${id}`,
+              url:
+                role === "manage" ? `menu/${id}` : `cart/${id}?uid=${user.uid}`,
             };
 
-            const res = await removeCartItemMutation(object);
+            const res = await removeItemMutation(object);
+            // console.log(res);
             if (res.data?.deletedCount)
               Swal.fire({
-                title: "Removed!",
-                text: "Successfully removed from cart",
+                title: role === "manage" ? "Deleted" : "Removed",
+                text:
+                  role === "manage"
+                    ? "Successfully deleted"
+                    : "Successfully removed from cart",
                 icon: "success",
               });
           } catch (error) {
