@@ -57,7 +57,7 @@ const AddItem = ({ update = false }) => {
     if (update) {
       try {
         data.price = parseFloat(data.price);
-        const resDB = await axiosSecure.put(`/menu/${id}`, data);
+        const resDB = await axiosSecure.patch(`/menu/${id}`, data);
         // console.log(resDB);
         if (resDB.data.modifiedCount) {
           return toast.success("Recipe updated");
@@ -71,7 +71,7 @@ const AddItem = ({ update = false }) => {
       const imageFile = new FormData();
       const originalFileName = data.image[0].name;
       const uniqueFileName = generateUniqueFileName(originalFileName);
-      console.log(uniqueFileName, originalFileName);
+    //   console.log(uniqueFileName, originalFileName);
       imageFile.append("image", data.image[0], uniqueFileName);
       const res = await axios.post(
         `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_API}`,

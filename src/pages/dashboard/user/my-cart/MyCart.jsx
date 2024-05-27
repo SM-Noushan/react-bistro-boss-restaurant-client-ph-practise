@@ -130,9 +130,12 @@ const MyCart = ({ role = null }) => {
                         )
                         .toFixed(2)}
                     </h1>
-                    <button className="bg-gold-054 px-4 py-3 rounded-md text-xl text-white">
+                    <Link
+                      to="/dashboard/reservation"
+                      className="bg-gold-054 hover:brightness-90 px-4 py-3 rounded-md text-xl text-white"
+                    >
                       Pay{" "}
-                    </button>
+                    </Link>
                   </>
                 )}
               </div>
