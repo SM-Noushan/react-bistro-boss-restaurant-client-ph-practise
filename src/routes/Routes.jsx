@@ -11,6 +11,7 @@ import AllUsers from "../pages/dashboard/admin/all-users/AllUsers";
 import AdminRoutes from "./AdminRoutes";
 import AddItem from "../pages/dashboard/admin/all-users/items/add-item/AddItem";
 import Reservation from "../pages/dashboard/user/reservation/Reservation";
+import PaymentHistory from "../pages/dashboard/user/payment-history/PaymentHistory";
 
 const router = createBrowserRouter([
   {
@@ -44,12 +45,16 @@ const router = createBrowserRouter([
         element: "none",
       },
       {
-        path: "my-cart",
-        element: <MyCart />,
-      },
-      {
         path: "reservation",
         element: <Reservation />,
+      },
+      {
+        path: "payment-history",
+        element: <PaymentHistory />,
+      },
+      {
+        path: "my-cart",
+        element: <MyCart />,
       },
 
       // admin routes

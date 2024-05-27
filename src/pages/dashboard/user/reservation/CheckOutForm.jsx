@@ -5,6 +5,7 @@ import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import useFetchData from "../../../../hooks/useFetchData";
 import useAuth from "../../../../hooks/useAuth";
 import { useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 const CheckOutForm = () => {
   const { user } = useAuth();
@@ -13,6 +14,7 @@ const CheckOutForm = () => {
   const axiosSecure = useAxiosSecure();
   const [clientSecret, setClientSecret] = useState("");
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const { data: myCartData } = useFetchData(
     "myCartData",
@@ -96,8 +98,12 @@ const CheckOutForm = () => {
         const resPayDB = await axiosSecure.post("/payments", payment);
         // console.log("pay db >> ", resPayDB.data);
         if (resPayDB?.data?.insertedId) {
-          queryClient.invalidateQueries(["totalCartItems, myCartData"]);
+          queryClient.invalidateQueries([
+            "totalCartItems, myCartData",
+            "myPayments",
+          ]);
           toast.success("Payment Successful");
+          navigate("/dashboard/payment-history");
         }
       }
     }

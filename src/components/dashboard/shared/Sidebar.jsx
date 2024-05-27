@@ -8,6 +8,7 @@ import {
   FaList,
   FaUsersGear,
   FaUtensils,
+  FaWallet,
 } from "react-icons/fa6";
 import useAdmin from "../../../hooks/useAdmin";
 
@@ -90,6 +91,11 @@ const Sidebar = () => {
                 <FaHotel className="mb-0.5" />,
                 "reservation",
                 "reservation"
+              )}
+              {menuItem(
+                <FaWallet className="mb-0.5" />,
+                "Payment History",
+                "payment-history"
               )}
               {menuItem(
                 <FaCartShopping className="mb-0.5" />,
