@@ -9,9 +9,11 @@ import MyCart from "../pages/dashboard/user/my-cart/MyCart";
 import PrivateRoutes from "../routes/PrivateRoutes";
 import AllUsers from "../pages/dashboard/admin/all-users/AllUsers";
 import AdminRoutes from "./AdminRoutes";
-import AddItem from "../pages/dashboard/admin/all-users/items/add-item/AddItem";
 import Reservation from "../pages/dashboard/user/reservation/Reservation";
 import PaymentHistory from "../pages/dashboard/user/payment-history/PaymentHistory";
+import AddItem from "../pages/dashboard/admin/items/add-item/AddItem";
+import AdminHome from "../pages/dashboard/admin/home/AdminHome";
+import UserHome from "../pages/dashboard/user/home/UserHome";
 
 const router = createBrowserRouter([
   {
@@ -42,7 +44,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: "none",
+        element: <UserHome />,
       },
       {
         path: "reservation",
@@ -58,6 +60,14 @@ const router = createBrowserRouter([
       },
 
       // admin routes
+      {
+        path: "admin",
+        element: (
+          <AdminRoutes>
+            <AdminHome />,
+          </AdminRoutes>
+        ),
+      },
       {
         path: "admin/users",
         element: (

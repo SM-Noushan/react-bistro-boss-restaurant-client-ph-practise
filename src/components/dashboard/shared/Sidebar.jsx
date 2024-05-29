@@ -57,7 +57,7 @@ const Sidebar = () => {
               {menuItem(
                 <FaHouse className="mb-0.5" />,
                 "Admin Home",
-                "/dashboard/admin/home"
+                "/dashboard/admin"
               )}
               {menuItem(
                 <FaUtensils className="mb-0.5" />,

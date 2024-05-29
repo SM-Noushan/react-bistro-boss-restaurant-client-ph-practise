@@ -1,14 +1,22 @@
+import { useQuery } from "@tanstack/react-query";
+import useAxiosSecure from "./useAxiosSecure";
 import useAuth from "./useAuth";
-import useFetchData from "./useFetchData";
 
 const useAdmin = () => {
   const { user } = useAuth();
-  const { data: isAdmin, isLoading: isAdminLoading } = useFetchData(
-    "isAdmin",
-    `admin/verify/${user?.uid}`,
-    () => {},
-    true
-  );
+  const axiosSecure = useAxiosSecure();
+  const { data: isAdmin, isLoading: isAdminLoading } = useQuery({
+    queryKey: ["isAdmin"],
+    queryFn: async () => {
+      try {
+        const res = await axiosSecure.get(`admin/verify/${user?.uid}`);
+        return res.data;
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    enabled: !!user,
+  });
   return { isAdmin, isAdminLoading };
 };
 

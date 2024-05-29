@@ -2,11 +2,11 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { FaUtensils } from "react-icons/fa6";
-import useAxiosSecure from "../../../../../../hooks/useAxiosSecure";
-import SectionHeading from "../../../../../../components/home/SectionHeading";
 import { useLoaderData, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import PropTypes from "prop-types";
+import useAxiosSecure from "../../../../../hooks/useAxiosSecure";
+import SectionHeading from "../../../../../components/home/SectionHeading";
 
 // Error message for form fields
 const errorMsg = (message) => (
@@ -71,7 +71,7 @@ const AddItem = ({ update = false }) => {
       const imageFile = new FormData();
       const originalFileName = data.image[0].name;
       const uniqueFileName = generateUniqueFileName(originalFileName);
-    //   console.log(uniqueFileName, originalFileName);
+      //   console.log(uniqueFileName, originalFileName);
       imageFile.append("image", data.image[0], uniqueFileName);
       const res = await axios.post(
         `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_API}`,

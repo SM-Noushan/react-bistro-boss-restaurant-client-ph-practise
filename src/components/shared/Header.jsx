@@ -2,61 +2,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { toast } from "react-toastify";
 import useFetchData from "../../hooks/useFetchData";
-
-const navLinks = (
-  <>
-    <NavLink
-      to="/"
-      className={({ isActive }) =>
-        `uppercase text-xl font-extrabold ${
-          isActive ? "text-[#EEFF25]" : "text-dark-001 md:text-white"
-        }`
-      }
-    >
-      Home
-    </NavLink>
-    <NavLink
-      to="/contact"
-      className={({ isActive }) =>
-        `uppercase text-xl font-extrabold ${
-          isActive ? "text-[#EEFF25]" : "text-dark-001 md:text-white"
-        }`
-      }
-    >
-      Contact
-    </NavLink>
-    <NavLink
-      to="/dashboard"
-      className={({ isActive }) =>
-        `uppercase text-xl font-extrabold ${
-          isActive ? "text-[#EEFF25]" : "text-dark-001 md:text-white"
-        }`
-      }
-    >
-      Dashboard
-    </NavLink>
-    <NavLink
-      to="/menu"
-      className={({ isActive }) =>
-        `uppercase text-xl font-extrabold ${
-          isActive ? "text-[#EEFF25]" : "text-dark-001 md:text-white"
-        }`
-      }
-    >
-      Our Menu
-    </NavLink>
-    <NavLink
-      to="/shop?category=salad"
-      className={({ isActive }) =>
-        `uppercase text-xl font-extrabold ${
-          isActive ? "text-[#EEFF25]" : "text-dark-001 md:text-white"
-        }`
-      }
-    >
-      Our Shop
-    </NavLink>
-  </>
-);
+import Navlinks from "./Navlinks";
 
 const Header = () => {
   const { user, loading, logOut } = useAuth();
@@ -109,7 +55,7 @@ const Header = () => {
           <div className="flex-none hidden lg:flex lg:items-center lg:justify-between lg:gap-20">
             <ul className="menu menu-horizontal gap-x-8">
               {/* Navbar menu content here */}
-              {navLinks}
+              <Navlinks />
             </ul>
           </div>
           <div className="flex justify-between items-center gap-x-4">
@@ -194,7 +140,7 @@ const Header = () => {
         ></label>
         <ul className="menu p-4 w-80 min-h-full space-y-4 bg-base-300">
           {/* Sidebar content here */}
-          {navLinks}
+          <Navlinks />
         </ul>
       </div>
     </div>
